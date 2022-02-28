@@ -12,11 +12,11 @@ RUN npm set progress=false && \
 COPY . .
 RUN npm set progress=false && \
     npm config set depth 0 && \
-    export REACT_APP_WEBSITE_HOST=http://192.168.114.46:8000 && \
-    export REACT_APP_SERVER_HOST=http://192.168.114.46:8080/api && \
-    export REACT_APP_LAPIS_HOST=http://192.168.114.46:2345/v1 && \
-    export REACT_APP_ALTERNATIVE_SEQUENCE_DATA_SOURCE_URL=https://cov-spectrum.org && \
-    export REACT_APP_SENTRY_DSN=https://c5039b027c664cda80c173d6a0023bb5@o1333589.ingest.sentry.io/6599204 && \
+    export REACT_APP_WEBSITE_HOST=https://cov-spectrum.org && \
+    export REACT_APP_SERVER_HOST=https://cov-spectrum.org/api/v2 && \
+    export REACT_APP_LAPIS_HOST=https://lapis.cov-spectrum.org/gisaid/v1 && \
+    export REACT_APP_ALTERNATIVE_SEQUENCE_DATA_SOURCE_URL=https://open.cov-spectrum.org && \
+    export REACT_APP_SENTRY_DSN=https://c5039b027c664cda80c173d6a0023bb5@o1333589.ingest.sentry.io/6144582 && \
     export REACT_APP_SENTRY_ENVIRONMENT=prod-gisaid && \
     npm --quiet run build
 
