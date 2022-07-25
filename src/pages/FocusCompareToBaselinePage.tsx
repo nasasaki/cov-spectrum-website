@@ -8,8 +8,10 @@ import { DateCountSampleData } from '../data/sample/DateCountSampleDataset';
 import { MultiVariantTimeDistributionLineChart } from '../widgets/MultiVariantTimeDistributionLineChart';
 import { NamedCard } from '../components/NamedCard';
 import { AnalysisMode } from '../data/AnalysisMode';
-import { Chen2021FitnessPreview } from '../models/chen2021Fitness/Chen2021FitnessPreview';
-import { LocationDateVariantSelector } from '../data/LocationDateVariantSelector';
+import {
+  Chen2021FitnessExplanation,
+  Chen2021FitnessPreview,
+} from '../models/chen2021Fitness/Chen2021FitnessPreview';
 import { Althaus2021GrowthWidget } from '../models/althaus2021Growth/Althaus2021GrowthWidget';
 import { FullSampleAggEntry, FullSampleAggEntryField } from '../data/sample/FullSampleAggEntry';
 import { _fetchAggSamples } from '../data/api-lapis';
@@ -17,6 +19,8 @@ import { Utils } from '../services/Utils';
 import { useDeepCompareMemo } from '../helpers/deep-compare-hooks';
 import { DivisionModal } from '../components/DivisionModal';
 import { createDivisionBreakdownButton } from './FocusSinglePage';
+import { LapisSelector } from '../data/LapisSelector';
+import { ErrorAlert } from '../components/ErrorAlert';
 
 export const FocusCompareToBaselinePage = () => {
   const exploreUrl = useExploreUrl()!;
@@ -34,11 +38,9 @@ export const FocusCompareToBaselinePage = () => {
   );
 
   // Fetch the whole sample set which, in this case, means the union of all selected variant.
-  const wholeSelector: LocationDateVariantSelector = useMemo(
+  const wholeSelector: LapisSelector = useMemo(
     () => ({
-      location: ldvsSelectors[0].location,
-      dateRange: ldvsSelectors[0].dateRange,
-      samplingStrategy: ldvsSelectors[0].samplingStrategy,
+      ...ldvsSelectors[0],
       variant: {
         variantQuery: ldvsSelectors
           .map(ldvsSelector => `(${transformToVariantQuery(ldvsSelector.variant!)})`)
@@ -120,15 +122,21 @@ export const FocusCompareToBaselinePage = () => {
     };
   };
 
-  const splitSequencesOverTime = useDeepCompareMemo(() => generateSplitData(splitField, 'date'), [
-    splitField,
-    ldvsSelectors,
-  ]);
+  const splitSequencesOverTime = useDeepCompareMemo(
+    () => generateSplitData(splitField, 'date'),
+    [splitField, ldvsSelectors]
+  );
 
   // --- Rendering ---
 
   if (!exploreUrl.variants) {
     return null;
+  }
+
+  // Error handling
+  const allErrors = [variantDateCounts.error, wholeDateCount.error].filter(e => !!e) as string[];
+  if (allErrors.length > 0) {
+    return <ErrorAlert messages={allErrors} />;
   }
 
   return (
@@ -172,15 +180,8 @@ export const FocusCompareToBaselinePage = () => {
               <NamedCard
                 title='Relative growth advantage'
                 toolbar={[createDivisionBreakdownButton('Chen2021Fitness', setShowChen2021FitnessDivGrid)]}
-                description={`
-      If variants spread pre-dominantly by local transmission across demographic groups, this estimate reflects 
-      the relative growth advantage of the focal variant. Importantly, the relative growth advantage estimate 
-      reflects the advantage compared to the baseline variant. Many factors can contribute to a growth advantage, 
-      including an intrinsic  transmission advantage and immune evasion. When absolute numbers of a variant are low, 
-      the advantage may merely reflect the current importance of introductions from abroad or the variant spreading 
-      in a particular demographic group. In this case, the estimate does not provide information on any intrinsic 
-      fitness advantages.`}
               >
+                <Chen2021FitnessExplanation />
                 <div style={{ height: 400 }}>
                   <Chen2021FitnessPreview
                     variantDateCounts={variantDateCounts.data[1]}
@@ -193,7 +194,7 @@ export const FocusCompareToBaselinePage = () => {
           {variantDateCounts.data && wholeDateCount.data && (
             <GridCell minWidth={700}>
               <Althaus2021GrowthWidget.ShareableComponent
-                title='Relative growth advantage'
+                title='Relative growth advantage: three mechanisms'
                 variantDateCounts={variantDateCounts.data[1]}
                 wholeDateCounts={wholeDateCount.data}
               />
@@ -228,17 +229,8 @@ export const FocusCompareToBaselinePage = () => {
           getData={splitSequencesOverTime.getData}
           splitData={splitSequencesOverTime.splitData}
           generate={(division, d) => (
-            <NamedCard
-              title={division}
-              description={`
-      If variants spread pre-dominantly by local transmission across demographic groups, this estimate reflects 
-      the relative growth advantage of the focal variant. Importantly, the relative growth advantage estimate 
-      reflects the advantage compared to the baseline variant. Many factors can contribute to a growth advantage, 
-      including an intrinsic  transmission advantage and immune evasion. When absolute numbers of a variant are low, 
-      the advantage may merely reflect the current importance of introductions from abroad or the variant spreading 
-      in a particular demographic group. In this case, the estimate does not provide information on any intrinsic 
-      fitness advantages.`}
-            >
+            <NamedCard title={division}>
+              <Chen2021FitnessExplanation />
               <div style={{ height: 400 }}>
                 <Chen2021FitnessPreview variantDateCounts={d.variant[1]} wholeDateCounts={d.whole} />
               </div>

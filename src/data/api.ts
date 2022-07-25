@@ -2,12 +2,12 @@ import { CaseCountEntry, CaseCountEntryRaw, parseCaseCountEntry } from './CaseCo
 import { LocationDateSelector } from './LocationDateSelector';
 import { addLocationSelectorToUrlSearchParams } from './LocationSelector';
 import { addDateRangeSelectorToUrlSearchParams } from './DateRangeSelector';
-import { ArticleEntry, ArticleEntryRaw, parseArticleEntry } from './ArticleEntry';
 import { PangoLineageAlias } from './PangoLineageAlias';
 import { CountryMapping } from './CountryMapping';
 import { AccountService } from '../services/AccountService';
 import { ReferenceGenomeInfo } from './ReferenceGenomeInfo';
 import { UserCountry } from './UserCountry';
+import { AddCollectionResponse, Collection } from './Collection';
 
 const HOST = process.env.REACT_APP_SERVER_HOST;
 
@@ -31,12 +31,31 @@ export const get = (endpoint: string, signal?: AbortSignal) => {
   });
 };
 
-export const post = (endpoint: string, body: unknown, signal?: AbortSignal) => {
+export const post = (endpoint: string, body: unknown, signal?: AbortSignal, stringifyBody = true) => {
   const url = HOST + endpoint;
   return fetch(url, {
     method: 'POST',
     headers: getBaseHeaders(),
-    body: JSON.stringify(body),
+    body: stringifyBody ? JSON.stringify(body) : (body as any),
+    signal,
+  });
+};
+
+export const put = (endpoint: string, body: unknown, signal?: AbortSignal, stringifyBody = true) => {
+  const url = HOST + endpoint;
+  return fetch(url, {
+    method: 'PUT',
+    headers: getBaseHeaders(),
+    body: stringifyBody ? JSON.stringify(body) : (body as any),
+    signal,
+  });
+};
+
+export const del = (endpoint: string, signal?: AbortSignal) => {
+  const url = HOST + endpoint;
+  return fetch(url, {
+    method: 'DELETE',
+    headers: getBaseHeaders(),
     signal,
   });
 };
@@ -70,18 +89,6 @@ export async function fetchCaseCounts(
   return body.map(raw => parseCaseCountEntry(raw));
 }
 
-export async function fetchArticles(pangoLineage: string, signal?: AbortSignal): Promise<ArticleEntry[]> {
-  const params = new URLSearchParams();
-  params.set('pangoLineage', pangoLineage);
-
-  const res = await get(`/resource/article?${params.toString()}`, signal);
-  if (!res.ok) {
-    throw new Error('Error fetching case data data');
-  }
-  const body = (await res.json()) as ArticleEntryRaw[];
-  return body.map(raw => parseArticleEntry(raw));
-}
-
 export async function fetchPangoLineageAliases(signal?: AbortSignal): Promise<PangoLineageAlias[]> {
   const url = '/resource/pango-lineage-alias';
   const res = await get(url, signal);
@@ -107,4 +114,47 @@ export async function fetchReferenceGenomeInfo(signal?: AbortSignal): Promise<Re
     throw new Error('Error fetching reference genome information');
   }
   return (await res.json()) as ReferenceGenomeInfo;
+}
+
+export async function fetchCollections(signal?: AbortSignal): Promise<Collection[]> {
+  const url = '/resource/collection';
+  const res = await get(url, signal);
+  if (!res.ok) {
+    throw new Error('Error fetching collection');
+  }
+  return (await res.json()) as Collection[];
+}
+
+export async function addCollection(collection: Collection): Promise<AddCollectionResponse> {
+  const url = '/resource/collection';
+  const res = await post(url, collection);
+  if (!res.ok) {
+    throw new Error('Error adding collection');
+  }
+  return (await res.json()) as AddCollectionResponse;
+}
+
+export async function updateCollection(collection: Collection, adminKey: string): Promise<void> {
+  const url = `/resource/collection/${collection.id}?adminKey=${adminKey}`;
+  const res = await put(url, collection);
+  if (!res.ok) {
+    throw new Error('Error updating collection');
+  }
+}
+
+export async function deleteCollection(id: number, adminKey: string): Promise<void> {
+  const url = `/resource/collection/${id}?adminKey=${adminKey}`;
+  const res = await del(url);
+  if (!res.ok) {
+    throw new Error('Error updating collection');
+  }
+}
+
+export async function validateCollectionAdminKey(id: number, adminKey: string): Promise<boolean> {
+  const url = `/resource/collection/${id}/validate-admin-key`;
+  const res = await post(url, adminKey, undefined, false);
+  if (!res.ok) {
+    throw new Error('Error validating admin key');
+  }
+  return (await res.json()) as boolean;
 }

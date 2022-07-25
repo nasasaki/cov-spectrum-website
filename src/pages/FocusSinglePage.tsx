@@ -12,7 +12,10 @@ import { VariantInternationalComparisonChartWidget } from '../widgets/VariantInt
 import { VariantDivisionDistributionChartWidget } from '../widgets/VariantDivisionDistributionChartWidget';
 import { DivisionCountSampleData } from '../data/sample/DivisionCountSampleDataset';
 import { NamedCard } from '../components/NamedCard';
-import { Chen2021FitnessPreview } from '../models/chen2021Fitness/Chen2021FitnessPreview';
+import {
+  Chen2021FitnessExplanation,
+  Chen2021FitnessPreview,
+} from '../models/chen2021Fitness/Chen2021FitnessPreview';
 import { Althaus2021GrowthWidget } from '../models/althaus2021Growth/Althaus2021GrowthWidget';
 import { VariantAgeDistributionChartWidget } from '../widgets/VariantAgeDistributionChartWidget';
 import { AgeCountSampleData } from '../data/sample/AgeCountSampleDataset';
@@ -20,7 +23,6 @@ import { VariantMutations } from '../components/VariantMutations';
 import { CaseCountAsyncDataset, CaseCountData } from '../data/CaseCountDataset';
 import { useAsyncDataset } from '../helpers/use-async-dataset';
 import { Button, ButtonVariant, ShowMoreButton } from '../helpers/ui';
-import { mapValues } from 'lodash';
 import { CountryDateCountSampleData } from '../data/sample/CountryDateCountSampleDataset';
 import { VariantHeader } from '../components/VariantHeader';
 import { FocusVariantHeaderControls } from '../components/FocusVariantHeaderControls';
@@ -33,16 +35,24 @@ import { WasteWaterDataset } from '../models/wasteWater/types';
 import { filter, getData } from '../models/wasteWater/loading';
 import { WASTE_WATER_AVAILABLE_LINEAGES } from '../models/wasteWater/WasteWaterDeepFocus';
 import { WasteWaterSummaryTimeWidget } from '../models/wasteWater/WasteWaterSummaryTimeWidget';
-import { ArticleData } from '../data/ArticleDataset';
-import { ArticleListWidget } from '../widgets/ArticleListWidget';
 import { HospDiedAgeSampleData } from '../data/sample/HospDiedAgeSampleDataset';
 import { HospitalizationDeathChartWidget } from '../widgets/HospitalizationDeathChartWidget';
 import { useSingleSelectorsFromExploreUrl } from '../helpers/selectors-from-explore-url-hook';
 import { ErrorBoundaryFallback } from '../components/ErrorBoundaryFallback';
 import * as Sentry from '@sentry/react';
+import { isDefaultHostSelector } from '../data/HostSelector';
+import { VariantHosts } from '../components/VariantHosts';
+import { HuismanScire2021ReContainer } from '../models/huismanScire2021Re/HuismanScire2021ReContainer';
+import { ErrorAlert } from '../components/ErrorAlert';
+import { VariantInsertions } from '../components/VariantInsertions';
+import * as lodashAlternatives from '../helpers/lodash_alternatives';
+
+// Due to missing additional data, we are currently not able to maintain some of our Swiss specialties.
+const SWISS_SPECIALTIES_ACTIVATED = false;
 
 export const FocusSinglePage = () => {
   const exploreUrl = useExploreUrl();
+  const [lineageDistributionIndex, setLineageDistributionIndex] = useState(0);
   const [showVariantTimeDistributionDivGrid, setShowVariantTimeDistributionDivGrid] = useState(false);
   const [showEstimatedCasesDivGrid, setShowEstimatedCasesDivGrid] = useState(false);
   const [showVariantAgeDistributionDivGrid, setShowVariantAgeDistributionDivGrid] = useState(false);
@@ -51,9 +61,9 @@ export const FocusSinglePage = () => {
   // Deep focus buttons
   const deepFocusButtons = useMemo(
     () =>
-      mapValues(deepFocusPaths, suffix => {
-        return <ShowMoreButton key={suffix} to={exploreUrl?.getDeepFocusPageUrl(suffix) ?? '#'} />;
-      }),
+      lodashAlternatives.mapValues(deepFocusPaths, (suffix: string) => (
+        <ShowMoreButton key={suffix} to={exploreUrl?.getDeepFocusPageUrl(suffix) ?? '#'} />
+      )),
     [exploreUrl]
   );
 
@@ -62,12 +72,14 @@ export const FocusSinglePage = () => {
     exploreUrl!
   );
   // Date counts
-  const variantDateCount = useQuery(signal => DateCountSampleData.fromApi(ldvsSelector, signal), [
-    ldvsSelector,
-  ]);
-  const wholeDateCountWithDateFilter = useQuery(signal => DateCountSampleData.fromApi(ldsSelector, signal), [
-    ldsSelector,
-  ]);
+  const variantDateCount = useQuery(
+    signal => DateCountSampleData.fromApi(ldvsSelector, signal),
+    [ldvsSelector]
+  );
+  const wholeDateCountWithDateFilter = useQuery(
+    signal => DateCountSampleData.fromApi(ldsSelector, signal),
+    [ldsSelector]
+  );
   const variantInternationalDateCount = useQuery(
     signal => CountryDateCountSampleData.fromApi(dvsSelector, signal),
     [dvsSelector]
@@ -77,29 +89,34 @@ export const FocusSinglePage = () => {
     [dsSelector]
   );
   // Age counts
-  const variantAgeCount = useQuery(signal => AgeCountSampleData.fromApi(ldvsSelector, signal), [
-    ldvsSelector,
-  ]);
+  const variantAgeCount = useQuery(
+    signal => AgeCountSampleData.fromApi(ldvsSelector, signal),
+    [ldvsSelector]
+  );
   const wholeAgeCount = useQuery(
     // Used by the focus page
     signal => AgeCountSampleData.fromApi(ldsSelector, signal),
     [ldsSelector]
   );
   // Division counts
-  const variantDivisionCount = useQuery(signal => DivisionCountSampleData.fromApi(ldvsSelector, signal), [
-    ldvsSelector,
-  ]);
-  const wholeDivisionCount = useQuery(signal => DivisionCountSampleData.fromApi(ldsSelector, signal), [
-    ldsSelector,
-  ]);
+  const variantDivisionCount = useQuery(
+    signal => DivisionCountSampleData.fromApi(ldvsSelector, signal),
+    [ldvsSelector]
+  );
+  const wholeDivisionCount = useQuery(
+    signal => DivisionCountSampleData.fromApi(ldsSelector, signal),
+    [ldsSelector]
+  );
 
   // Hospitalization and death
-  const variantHospDeathAgeCount = useQuery(signal => HospDiedAgeSampleData.fromApi(ldvsSelector, signal), [
-    ldvsSelector,
-  ]);
-  const wholeHospDeathAgeCount = useQuery(signal => HospDiedAgeSampleData.fromApi(ldsSelector, signal), [
-    ldsSelector,
-  ]);
+  const variantHospDeathAgeCount = useQuery(
+    signal => HospDiedAgeSampleData.fromApi(ldvsSelector, signal),
+    [ldvsSelector]
+  );
+  const wholeHospDeathAgeCount = useQuery(
+    signal => HospDiedAgeSampleData.fromApi(ldsSelector, signal),
+    [ldsSelector]
+  );
 
   // Cases
   const caseCountDataset: CaseCountAsyncDataset = useAsyncDataset(lSelector, ({ selector }, { signal }) =>
@@ -108,7 +125,7 @@ export const FocusSinglePage = () => {
 
   // Wastewater
   const [wasteWaterData, setWasteWaterData] = useState<WasteWaterDataset | undefined>(undefined);
-  const pangoLineageWithoutAsterisk = exploreUrl?.variant?.pangoLineage?.replace('*', '');
+  const pangoLineageWithoutAsterisk = exploreUrl?.variants![0].pangoLineage?.replace('*', '');
   useEffect(() => {
     let isMounted = true;
     const country = exploreUrl?.location.country;
@@ -123,15 +140,6 @@ export const FocusSinglePage = () => {
       isMounted = false;
     };
   }, [exploreUrl?.location.country, pangoLineageWithoutAsterisk]);
-
-  // Articles
-  const articleDataset = useQuery(
-    signal =>
-      exploreUrl?.variant?.pangoLineage
-        ? ArticleData.fromApi(exploreUrl?.variant?.pangoLineage, signal)
-        : Promise.resolve(undefined),
-    [exploreUrl?.variant?.pangoLineage]
-  );
 
   // --- Prepare data for sub-division plots ---
   // If this is not a country page, the sub-plots will be split by countries. Otherwise, they should be split by
@@ -210,25 +218,39 @@ export const FocusSinglePage = () => {
     };
   };
 
-  const splitSequencesOverTime = useDeepCompareMemo(() => generateSplitData(splitField, 'date'), [
-    splitField,
-    ldvsSelector,
-    ldsSelector,
-    [...(caseCountDatasetSplit?.keys() ?? [])],
-  ]);
-  const splitAgeDistribution = useDeepCompareMemo(() => generateSplitData(splitField, 'age'), [
-    splitField,
-    ldvsSelector,
-    ldsSelector,
-  ]);
+  const splitSequencesOverTime = useDeepCompareMemo(
+    () => generateSplitData(splitField, 'date'),
+    [splitField, ldvsSelector, ldsSelector, [...(caseCountDatasetSplit?.keys() ?? [])]]
+  );
+  const splitAgeDistribution = useDeepCompareMemo(
+    () => generateSplitData(splitField, 'age'),
+    [splitField, ldvsSelector, ldsSelector]
+  );
 
   // --- Rendering ---
 
-  if (!exploreUrl || !exploreUrl.variant) {
+  if (!exploreUrl || !exploreUrl.variants) {
     return null;
   }
-  const { pangoLineage } = exploreUrl.variant;
   const { country } = exploreUrl.location;
+  const host = exploreUrl.host;
+
+  // Error handling
+  const allErrors = [
+    variantDateCount.error,
+    wholeDateCountWithDateFilter.error,
+    variantAgeCount.error,
+    wholeAgeCount.error,
+    variantDivisionCount.error,
+    wholeDivisionCount.error,
+    variantInternationalDateCount.error,
+    wholeInternationalDateCount.error,
+    variantHospDeathAgeCount.error,
+    wholeHospDeathAgeCount.error,
+  ].filter(e => !!e) as string[];
+  if (allErrors.length > 0) {
+    return <ErrorAlert messages={allErrors} />;
+  }
 
   // Wastewater plot
   let wasteWaterSummaryPlot = undefined;
@@ -272,17 +294,8 @@ export const FocusSinglePage = () => {
     <>
       <VariantHeader
         dateRange={exploreUrl.dateRange}
-        variant={exploreUrl.variant}
-        controls={
-          <FocusVariantHeaderControls
-            selector={{
-              location: exploreUrl.location,
-              dateRange: exploreUrl.dateRange,
-              variant: exploreUrl.variant,
-              samplingStrategy: exploreUrl.samplingStrategy,
-            }}
-          />
-        }
+        variant={exploreUrl.variants[0]}
+        controls={<FocusVariantHeaderControls selector={ldvsSelector} />}
       />
       {variantDateCount.data &&
       wholeDateCountWithDateFilter.data &&
@@ -300,14 +313,30 @@ export const FocusSinglePage = () => {
               variantSampleSet={variantDateCount.data}
               wholeSampleSet={wholeDateCountWithDateFilter.data}
             />
-            {(!pangoLineage || pangoLineage.endsWith('*')) && (
+            {!isDefaultHostSelector(host) && (
               <div className='mx-0.5 mt-1 mb-5 md:mx-3 shadow-lg rounded-lg bg-white p-2 pl-4'>
-                <VariantLineages
-                  onVariantSelect={exploreUrl.setVariant}
-                  selector={variantDateCount.data.selector}
-                />{' '}
+                <VariantHosts selector={ldvsSelector} />
               </div>
             )}
+            <NamedCard
+              title='Lineages'
+              tabs={{
+                labels: ['Pango lineage (pangolin)', 'Pango lineage (Nextclade)', 'Nextstrain clade'],
+                activeTabIndex: lineageDistributionIndex,
+                onNewTabSelect: newIndex => setLineageDistributionIndex(newIndex),
+              }}
+            >
+              <VariantLineages
+                onVariantSelect={exploreUrl.setVariants}
+                selector={ldvsSelector}
+                type={
+                  (['pangoLineage', 'nextcladePangoLineage', 'nextstrainClade'] as const)[
+                    lineageDistributionIndex
+                  ]
+                }
+                key={lineageDistributionIndex}
+              />
+            </NamedCard>
             <PackedGrid maxColumns={2}>
               <GridCell minWidth={600}>
                 {
@@ -325,20 +354,22 @@ export const FocusSinglePage = () => {
                   />
                 }
               </GridCell>
-              <GridCell minWidth={600}>
-                <EstimatedCasesChartWidget.ShareableComponent
-                  caseCounts={caseCountDataset}
-                  variantDateCounts={variantDateCount.data}
-                  wholeDateCounts={wholeDateCountWithDateFilter.data}
-                  height={300}
-                  title='Estimated cases'
-                  toolbarChildren={
-                    !country || country === 'Switzerland'
-                      ? [createDivisionBreakdownButton('EstimatedCases', setShowEstimatedCasesDivGrid)]
-                      : []
-                  }
-                />
-              </GridCell>
+              {isDefaultHostSelector(host) && (
+                <GridCell minWidth={600}>
+                  <EstimatedCasesChartWidget.ShareableComponent
+                    caseCounts={caseCountDataset}
+                    variantDateCounts={variantDateCount.data}
+                    wholeDateCounts={wholeDateCountWithDateFilter.data}
+                    height={300}
+                    title='Estimated cases'
+                    toolbarChildren={
+                      !country || (SWISS_SPECIALTIES_ACTIVATED && country === 'Switzerland')
+                        ? [createDivisionBreakdownButton('EstimatedCases', setShowEstimatedCasesDivGrid)]
+                        : []
+                    }
+                  />
+                </GridCell>
+              )}
               <GridCell minWidth={600}>
                 <VariantInternationalComparisonChartWidget.ShareableComponent
                   preSelectedCountries={country ? [country] : []}
@@ -351,13 +382,11 @@ export const FocusSinglePage = () => {
                 />
               </GridCell>
               <GridCell minWidth={600}>
-                {
-                  <VariantDivisionDistributionChartWidget.ShareableComponent
-                    title='Geographic distribution'
-                    variantSampleSet={variantDivisionCount.data}
-                    wholeSampleSet={wholeDivisionCount.data}
-                  />
-                }
+                <VariantDivisionDistributionChartWidget.ShareableComponent
+                  title='Geographic distribution'
+                  variantSampleSet={variantDivisionCount.data}
+                  wholeSampleSet={wholeDivisionCount.data}
+                />
               </GridCell>
               <GridCell minWidth={600}>
                 <NamedCard
@@ -366,17 +395,9 @@ export const FocusSinglePage = () => {
                     deepFocusButtons.chen2021Fitness,
                     createDivisionBreakdownButton('Chen2021Fitness', setShowChen2021FitnessDivGrid),
                   ]}
-                  description={`
-         If variants spread pre-dominantly by local transmission across demographic groups, this estimate reflects 
-         the relative growth advantage of the focal variant. Importantly, the relative growth advantage estimate 
-         reflects the advantage compared to co-circulating strains. Thus, as new variants spread, the advantage of 
-         the focal variant may decrease. Many factors can contribute to a growth advantage, including an intrinsic 
-         transmission advantage and immune evasion. When absolute numbers of a variant are low, the advantage may 
-         merely reflect the current importance of introductions from abroad or the variant spreading in a particular
-          demographic group. In this case, the estimate does not provide information on any intrinsic fitness 
-          advantages.`}
                 >
-                  <div style={{ height: 400 }}>
+                  <Chen2021FitnessExplanation />
+                  <div style={{ height: window.innerWidth < 640 ? 600 : 400 }}>
                     <Chen2021FitnessPreview
                       variantDateCounts={variantDateCount.data}
                       wholeDateCounts={wholeDateCountWithDateFilter.data}
@@ -386,23 +407,34 @@ export const FocusSinglePage = () => {
               </GridCell>
               <GridCell minWidth={700}>
                 <Althaus2021GrowthWidget.ShareableComponent
-                  title='Relative growth advantage'
+                  title='Relative growth advantage: three mechanisms'
                   variantDateCounts={variantDateCount.data}
                   wholeDateCounts={wholeDateCountWithDateFilter.data}
                 />
               </GridCell>
               <GridCell minWidth={600}>
-                <VariantAgeDistributionChartWidget.ShareableComponent
-                  title='Age demographics'
-                  height={300}
-                  variantSampleSet={variantAgeCount.data}
-                  wholeSampleSet={wholeAgeCount.data}
-                  toolbarChildren={[
-                    createDivisionBreakdownButton('AgeDemographics', setShowVariantAgeDistributionDivGrid),
-                  ]}
-                />
+                <NamedCard title='Reproduction number'>
+                  <HuismanScire2021ReContainer
+                    wholeDateCounts={wholeDateCountWithDateFilter.data}
+                    variantDateCounts={variantDateCount.data}
+                    caseCounts={caseCountDataset}
+                  />
+                </NamedCard>
               </GridCell>
-              {country === 'Switzerland' && (
+              {isDefaultHostSelector(host) && (
+                <GridCell minWidth={600}>
+                  <VariantAgeDistributionChartWidget.ShareableComponent
+                    title='Age demographics'
+                    height={300}
+                    variantSampleSet={variantAgeCount.data}
+                    wholeSampleSet={wholeAgeCount.data}
+                    toolbarChildren={[
+                      createDivisionBreakdownButton('AgeDemographics', setShowVariantAgeDistributionDivGrid),
+                    ]}
+                  />
+                </GridCell>
+              )}
+              {SWISS_SPECIALTIES_ACTIVATED && country === 'Switzerland' && isDefaultHostSelector(host) && (
                 <GridCell minWidth={600}>
                   <HospitalizationDeathChartWidget.ShareableComponent
                     extendedMetrics={false}
@@ -410,31 +442,25 @@ export const FocusSinglePage = () => {
                     field='hospitalized'
                     variantSampleSet={variantHospDeathAgeCount.data}
                     wholeSampleSet={wholeHospDeathAgeCount.data}
-                    variantName={exploreUrl.variant.pangoLineage ?? 'unnamed variant'}
+                    variantName={exploreUrl.variants[0].pangoLineage ?? 'unnamed variant'}
                     title='Hospitalization probabilities'
                     height={300}
                     toolbarChildren={deepFocusButtons.hospitalizationAndDeath}
                   />
                 </GridCell>
               )}
-              {wasteWaterSummaryPlot}
-              {exploreUrl?.variant?.pangoLineage && ( // TODO Check that nothing else is set
-                <GridCell minWidth={800}>
-                  {articleDataset.data && articleDataset.isSuccess ? (
-                    <ArticleListWidget.ShareableComponent
-                      title='Publications and pre-Prints'
-                      articleDataset={articleDataset.data}
-                    />
-                  ) : (
-                    <Loader />
-                  )}
-                </GridCell>
-              )}
+              {isDefaultHostSelector(host) && wasteWaterSummaryPlot}
             </PackedGrid>
 
             <div className='m-4'>
               <Sentry.ErrorBoundary fallback={<ErrorBoundaryFallback />}>
-                <VariantMutations selector={variantDateCount.data.selector} />
+                <VariantInsertions selector={ldvsSelector} />
+              </Sentry.ErrorBoundary>
+            </div>
+
+            <div className='m-4'>
+              <Sentry.ErrorBoundary fallback={<ErrorBoundaryFallback />}>
+                <VariantMutations selector={ldvsSelector} />
               </Sentry.ErrorBoundary>
             </div>
           </div>
@@ -505,19 +531,8 @@ export const FocusSinglePage = () => {
               getData={splitSequencesOverTime.getData}
               splitData={splitSequencesOverTime.splitData}
               generate={(division, d) => (
-                <NamedCard
-                  title={division}
-                  toolbar={deepFocusButtons.chen2021Fitness}
-                  description={`
-          If variants spread pre-dominantly by local transmission across demographic groups, this estimate reflects 
-          the relative growth advantage of the focal variant. Importantly, the relative growth advantage estimate 
-          reflects the advantage compared to co-circulating strains. Thus, as new variants spread, the advantage of 
-          the focal variant may decrease. Many factors can contribute to a growth advantage, including an intrinsic 
-          transmission advantage and immune evasion. When absolute numbers of a variant are low, the advantage may 
-          merely reflect the current importance of introductions from abroad or the variant spreading in a particular
-           demographic group. In this case, the estimate does not provide information on any intrinsic fitness 
-           advantages.`}
-                >
+                <NamedCard title={division} toolbar={deepFocusButtons.chen2021Fitness}>
+                  <Chen2021FitnessExplanation />
                   <div style={{ height: 350 }}>
                     <Chen2021FitnessPreview variantDateCounts={d.variant} wholeDateCounts={d.whole} />
                   </div>
@@ -539,7 +554,7 @@ export const FocusSinglePage = () => {
 export const createDivisionBreakdownButton = (key: string, setter: (show: boolean) => void) => (
   <Button
     key={key}
-    className='mt-1 ml-2'
+    className='mt-1 ml-2 w-max'
     variant={ButtonVariant.PRIMARY}
     onClick={() => {
       setter(true);

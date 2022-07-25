@@ -13,6 +13,10 @@ import Loader from '../components/Loader';
 import { VariantSearch } from '../components/VariantSearch';
 import { AnalysisMode } from '../data/AnalysisMode';
 import { getLocation } from '../helpers/get-location';
+import { useSingleSelectorsFromExploreUrl } from '../helpers/selectors-from-explore-url-hook';
+import { InternalLink } from '../components/InternalLink';
+import dayjs from 'dayjs';
+import { getCurrentLapisDataVersionDate } from '../data/api-lapis';
 
 type Props = {
   isSmallScreen: boolean;
@@ -20,27 +24,19 @@ type Props = {
 
 export const ExplorePage = ({ isSmallScreen }: Props) => {
   const exploreUrl = useExploreUrl();
+  const { lsSelector, lSelector, hostAndQc } = useSingleSelectorsFromExploreUrl(exploreUrl!);
 
   // Fetch data
   const wholeDatelessDataset = useQuery(
-    signal =>
-      DatelessCountrylessCountSampleData.fromApi(
-        { location: exploreUrl?.location!, samplingStrategy: exploreUrl?.samplingStrategy! },
-        signal
-      ),
-    [exploreUrl?.location, exploreUrl?.samplingStrategy]
+    signal => DatelessCountrylessCountSampleData.fromApi(lsSelector, signal),
+    [lsSelector]
   );
   const wholeDateCountDataset = useQuery(
-    signal =>
-      DateCountSampleData.fromApi(
-        { location: exploreUrl?.location!, samplingStrategy: exploreUrl?.samplingStrategy! },
-        signal
-      ),
-    [exploreUrl?.location, exploreUrl?.samplingStrategy]
+    signal => DateCountSampleData.fromApi(lsSelector, signal),
+    [lsSelector]
   );
-  const caseCountDataset: CaseCountAsyncDataset = useAsyncDataset(
-    { location: exploreUrl?.location! },
-    ({ selector }, { signal }) => CaseCountData.fromApi(selector, signal)
+  const caseCountDataset: CaseCountAsyncDataset = useAsyncDataset(lSelector, ({ selector }, { signal }) =>
+    CaseCountData.fromApi(selector, signal)
   );
 
   useEffect(() => {
@@ -60,6 +56,14 @@ export const ExplorePage = ({ isSmallScreen }: Props) => {
     <div className={`w-full mx-auto max-w-6xl mt-4`}>
       <div className='p-2 mr-4 '>
         <h1>Detect and analyze variants of SARS-CoV-2</h1>
+        <div className='text-sm pl-3'>
+          <p>
+            Search for Pango lineages, Nextstrain clades, AA and nucleotide substitutions, deletions, and 🌟{' '}
+            <b>insertions</b> 🌟 (
+            <InternalLink path='/about#faq-search-variants'>see documentation</InternalLink>):
+          </p>
+          <div>The sequence data was updated: <b style={{ color: "#d63384" }}>{dayjs(getCurrentLapisDataVersionDate()).calendar()}</b>{' '}(Present time: {Date().toLocaleString()})</div>
+        </div>
         <VariantSearch onVariantSelect={exploreUrl.setVariants} analysisMode={AnalysisMode.Single} />
       </div>
       <div className={`grid ${isSmallScreen ? '' : 'grid-cols-2'} h-full`}>
@@ -67,9 +71,10 @@ export const ExplorePage = ({ isSmallScreen }: Props) => {
           <h1 className='mt-4'>Known variants</h1>
           <p>Which variant would you like to explore?</p>
           <KnownVariantsList
-            onVariantSelect={exploreUrl.setVariant}
+            onVariantSelect={exploreUrl.setVariants}
             wholeDateCountSampleDataset={wholeDateCountDataset.data}
             variantSelector={undefined}
+            hostAndQc={hostAndQc}
             isHorizontal={false}
             isLandingPage={true}
           />

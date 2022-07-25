@@ -1,6 +1,6 @@
 import {
   Chen2021FitnessRequest,
-  Chen2021FitnessRequestConfig,
+  Chen2021FitnessRequestConfigPartial,
   Chen2021FitnessRequestData,
   Chen2021FitnessResponse,
   Chen2021FitnessResponseRawSchema,
@@ -11,7 +11,7 @@ import { useQuery } from '../../helpers/query-hook';
 import { DateCountSampleDataset } from '../../data/sample/DateCountSampleDataset';
 import dayjs from 'dayjs';
 
-const endpoint = 'https://cov-spectrum.org/api-chen2021fitness';
+const endpoint = 'http://192.168.114.46:8080/api/computed/model/chen2021Fitness';
 
 export const transformToRequestData = (
   variantDateCounts: DateCountSampleDataset,
@@ -59,7 +59,7 @@ export const transformToRequestData = (
 
 export const fillRequestWithDefaults = (
   data: Chen2021FitnessRequestData,
-  config?: Chen2021FitnessRequestConfig
+  config?: Chen2021FitnessRequestConfigPartial
 ): Chen2021FitnessRequest => {
   if (data.t.length === 0) {
     return {
@@ -160,7 +160,7 @@ type ModelDataResponse = {
 export const useModelData = (
   variantDateCounts: DateCountSampleDataset,
   wholeDateCounts: DateCountSampleDataset,
-  config?: Chen2021FitnessRequestConfig
+  config?: Chen2021FitnessRequestConfigPartial
 ): ModelDataResponse => {
   // Create request
   const { request, t0 } =
@@ -187,5 +187,33 @@ export const useModelData = (
             t0,
           }
         : undefined,
+  };
+};
+
+export const getModelData = async (
+  variantDateCounts: DateCountSampleDataset,
+  wholeDateCounts: DateCountSampleDataset,
+  config?: Chen2021FitnessRequestConfigPartial,
+  signal?: AbortSignal
+): Promise<{
+  response: Chen2021FitnessResponse | undefined;
+  request: Chen2021FitnessRequest;
+  t0: UnifiedDay;
+}> => {
+  // Create request
+  const data = transformToRequestData(variantDateCounts, wholeDateCounts);
+  const request = fillRequestWithDefaults(data.request, config);
+  const t0 = data.t0;
+
+  // Fetch data
+  let modelData = undefined;
+  try {
+    modelData = await getData(request, t0, signal);
+  } catch (_) {}
+
+  return {
+    request,
+    response: modelData,
+    t0,
   };
 };

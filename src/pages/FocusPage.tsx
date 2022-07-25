@@ -14,6 +14,7 @@ import { VariantSearch } from '../components/VariantSearch';
 import { FocusCompareEqualsPage } from './FocusCompareEqualsPage';
 import { FocusCompareToBaselinePage } from './FocusCompareToBaselinePage';
 import { getLocation } from '../helpers/get-location';
+import { formatVariantDisplayName } from '../data/VariantSelector';
 
 type Props = {
   isSmallScreen: boolean;
@@ -23,7 +24,7 @@ export const FocusPage = ({ isSmallScreen }: Props) => {
   const exploreUrl = useExploreUrl()!;
 
   // fetch data
-  const { lsSelector } = useSingleSelectorsFromExploreUrl(exploreUrl);
+  const { lsSelector, hostAndQc } = useSingleSelectorsFromExploreUrl(exploreUrl);
   const wholeDateCountWithoutDateFilter = useQuery(
     signal => DateCountSampleData.fromApi(lsSelector, signal),
     [lsSelector]
@@ -46,8 +47,7 @@ export const FocusPage = ({ isSmallScreen }: Props) => {
 
   useEffect(() => {
     // Include the variant name and location of interest in the page title
-    let variantObj = typeof exploreUrl.variants == 'object' ? exploreUrl.variants[0] : {};
-    let variant = 'pangoLineage' in variantObj ? variantObj['pangoLineage'] : 'Variant';
+    let variant = formatVariantDisplayName(exploreUrl.variants![0]);
     let place: string = getLocation(exploreUrl);
     document.title = `${variant} - ${place} - covSPECTRUM`;
   });
@@ -60,9 +60,10 @@ export const FocusPage = ({ isSmallScreen }: Props) => {
           {wholeDateCountWithoutDateFilter.data ? (
             <div id='explore-selectors'>
               <KnownVariantsList
-                onVariantSelect={exploreUrl.setVariant}
+                onVariantSelect={exploreUrl.setVariants}
                 wholeDateCountSampleDataset={wholeDateCountWithoutDateFilter.data}
                 variantSelector={exploreUrl.variants}
+                hostAndQc={hostAndQc}
                 isHorizontal={isSmallScreen}
                 isLandingPage={false}
               />
@@ -99,16 +100,24 @@ export const FocusPage = ({ isSmallScreen }: Props) => {
           {!isSmallScreen && (
             <div className='text-sm mb-2'>
               <p>
-                Search for pango lineages, amino acid mutations, and nucleotide mutations (
+                Search for Pango lineages, Nextstrain clades, AA and nucleotide substitutions, deletions, and
+                🌟 <b>insertions</b> 🌟 (
                 <InternalLink path='/about#faq-search-variants'>see documentation</InternalLink>):
               </p>
             </div>
           )}
-          <div id='variant-search-bar' className='flex flex-row flex-wrap m-1'>
+          <div
+            id='variant-search-bar'
+            className={`flex ${
+              exploreUrl.analysisMode === 'CompareToBaseline' || exploreUrl.analysisMode === 'CompareEquals'
+                ? 'flex-column'
+                : 'flex-row'
+            }  flex-wrap ${isSmallScreen ? 'w-full' : 'w-4/6'}`}
+          >
             <div className='m-1'>
               <DateRangePicker dateRangeSelector={exploreUrl.dateRange} />
             </div>
-            <div className='m-1 flex-grow'>
+            <div className='flex-grow'>
               <VariantSearch
                 onVariantSelect={exploreUrl.setVariants}
                 currentSelection={exploreUrl.variants}

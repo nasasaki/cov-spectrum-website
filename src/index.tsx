@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { App } from './App';
-import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { EmbedPage } from './pages/EmbedPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -13,7 +12,7 @@ import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 import { env } from './env';
 
-export let baseLocation = 'Europe';
+export let baseLocation = 'Japan';
 
 async function main() {
   // Initialize Sentry

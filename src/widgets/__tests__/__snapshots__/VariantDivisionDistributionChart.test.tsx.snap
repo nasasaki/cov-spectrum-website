@@ -13,6 +13,7 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
       id="chart-title-Average proportion during selected timeframe"
     >
       Average proportion during selected timeframe
+      <div />
     </h3>
     <div
       className="flex flex-col lg:flex-row "
@@ -20,34 +21,23 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
       <div
         className="w-full lg:w-2/3"
       >
+        <img
+          alt="color scale legend"
+          src="leg2.png"
+        />
         <div
-          className="sc-eCssSg enfXCs pd-1 md:m-2"
+          className="***masked*** pd-1 md:m-2"
           data={
             Array [
               Object {
-                "count": 24,
-                "division": "Baden-Wuerttemberg",
-                "prevalence": 0.07543374402816193,
+                "count": 78,
+                "division": "North Rhine Westphalia",
+                "prevalence": 0.16844469399213924,
               },
               Object {
-                "count": 59,
-                "division": "Bavaria",
-                "prevalence": 0.2789730010875219,
-              },
-              Object {
-                "count": 23,
-                "division": "Berlin",
-                "prevalence": 0.2656809518308883,
-              },
-              Object {
-                "count": 4,
-                "division": "Brandenburg",
-                "prevalence": 0.20931449502878074,
-              },
-              Object {
-                "count": 12,
-                "division": "Hamburg",
-                "prevalence": 0.1754642491592338,
+                "count": 7,
+                "division": "Saxony",
+                "prevalence": 0.05544993662864385,
               },
               Object {
                 "count": 34,
@@ -60,9 +50,14 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
                 "prevalence": 0.2896613190730838,
               },
               Object {
-                "count": 78,
-                "division": "North Rhine Westphalia",
-                "prevalence": 0.16844469399213924,
+                "count": 24,
+                "division": "Baden-Wuerttemberg",
+                "prevalence": 0.07543374402816193,
+              },
+              Object {
+                "count": 59,
+                "division": "Bavaria",
+                "prevalence": 0.2789730010875219,
               },
               Object {
                 "count": 12,
@@ -75,14 +70,14 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
                 "prevalence": 0.09229349330872173,
               },
               Object {
-                "count": 7,
-                "division": "Saxony",
-                "prevalence": 0.05544993662864385,
+                "count": 23,
+                "division": "Berlin",
+                "prevalence": 0.2656809518308883,
               },
               Object {
-                "count": 1,
-                "division": "Saxony-Anhalt",
-                "prevalence": 0.03263707571801567,
+                "count": 12,
+                "division": "Hamburg",
+                "prevalence": 0.1754642491592338,
               },
               Object {
                 "count": 30,
@@ -93,6 +88,16 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
                 "count": 1,
                 "division": "Thuringia",
                 "prevalence": 0.03367003367003367,
+              },
+              Object {
+                "count": 4,
+                "division": "Brandenburg",
+                "prevalence": 0.20931449502878074,
+              },
+              Object {
+                "count": 1,
+                "division": "Saxony-Anhalt",
+                "prevalence": 0.03263707571801567,
               },
             ]
           }
@@ -250,7 +255,7 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
         </div>
       </div>
       <div
-        className="pl-2 pt-1 flex flex-row w-full sm:w-auto md:justify-end sm:flex-col sm:pt-0 sm:pl-1 sm:pb-8  md:mt-auto"
+        className="pl-2 pt-3 flex lg:inline flex-row w-full sm:w-auto md:justify-end sm:flex-col sm:pt-0 sm:pl-1 sm:pb-8  md:mt-auto"
       >
         <div
           className="flex flex-col justify-end pr-1 mb-2 overflow-hidden h-full w-auto"
@@ -264,7 +269,7 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
               className="flex w-full"
             >
               <div
-                className="w-auto grow-0 text-3xl md:text-5xl"
+                className="w-auto grow-0 text-xl sm:text-3xl md:text-5xl"
                 style={
                   Object {
                     "color": "#1F407A",
@@ -275,7 +280,7 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
                 %
               </div>
               <div
-                className="sc-bdfBwQ kGXcMt self-end"
+                className="***masked*** self-end"
               />
             </div>
             <div
@@ -306,10 +311,10 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12 6C9.831 6 8.066 7.765 8.066 9.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626-.255.207-.496.404-.691.599C11.029 13.156 11 14.215 11 14.333V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182C15.934 7.765 14.169 6 12 6zM11 16H13V18H11z"
+                    d="M12 6a3.939 3.939 0 0 0-3.934 3.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626a9.208 9.208 0 0 0-.691.599c-.998.997-1.027 2.056-1.027 2.174V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182A3.937 3.937 0 0 0 12 6zm-1 10h2v2h-2z"
                   />
                   <path
-                    d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10s10-4.486,10-10S17.514,2,12,2z M12,20c-4.411,0-8-3.589-8-8s3.589-8,8-8 s8,3.589,8,8S16.411,20,12,20z"
+                    d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"
                   />
                 </svg>
               </div>
@@ -321,6 +326,7 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
             id="metric-tooltip-Prevalence range"
           >
             <style
+              aria-hidden="true"
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "
@@ -415,7 +421,7 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
               className="flex w-full"
             >
               <div
-                className="w-auto grow-0 text-3xl md:text-5xl"
+                className="w-auto grow-0 text-xl sm:text-3xl md:text-5xl"
                 style={
                   Object {
                     "color": "#7f8c8d",
@@ -425,7 +431,7 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
                 16
               </div>
               <div
-                className="sc-bdfBwQ kGXcMt self-end"
+                className="***masked*** self-end"
               />
             </div>
             <div
@@ -456,10 +462,10 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12 6C9.831 6 8.066 7.765 8.066 9.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626-.255.207-.496.404-.691.599C11.029 13.156 11 14.215 11 14.333V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182C15.934 7.765 14.169 6 12 6zM11 16H13V18H11z"
+                    d="M12 6a3.939 3.939 0 0 0-3.934 3.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626a9.208 9.208 0 0 0-.691.599c-.998.997-1.027 2.056-1.027 2.174V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182A3.937 3.937 0 0 0 12 6zm-1 10h2v2h-2z"
                   />
                   <path
-                    d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10s10-4.486,10-10S17.514,2,12,2z M12,20c-4.411,0-8-3.589-8-8s3.589-8,8-8 s8,3.589,8,8S16.411,20,12,20z"
+                    d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"
                   />
                 </svg>
               </div>
@@ -471,6 +477,7 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
             id="metric-tooltip-Divisions"
           >
             <style
+              aria-hidden="true"
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "

@@ -10,17 +10,17 @@ export const HeaderSamplingStrategySelect = () => {
   }
 
   return (
-    <Form inline className='mr-3'>
+    <Form className='mr-3'>
       <div>
         <Form.Control
           as='select'
-          custom
           id='samplingStrategySelect'
           value={exploreUrl.samplingStrategy}
           onChange={ev => exploreUrl.setSamplingStrategy(ev.target.value as SamplingStrategy)}
         >
           <option value={SamplingStrategy.AllSamples}>All samples</option>
-          <option value={SamplingStrategy.Surveillance}>Surveillance</option>
+          <option value={SamplingStrategy.AirportQuarantine}>Airport quarantine</option>
+          <option value={SamplingStrategy.DomesticSamples}>Domestic samples</option>
         </Form.Control>
       </div>
     </Form>

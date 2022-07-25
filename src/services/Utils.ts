@@ -57,4 +57,25 @@ export class Utils {
   static getRandomColorCode(): string {
     return '#' + Math.floor(Math.random() * (16 ** 6 - 1)).toString(16);
   }
+
+  static safeParseInt(s: string | null | undefined): number | undefined {
+    try {
+      if (s) {
+        return Number.parseInt(s);
+      }
+    } catch (_) {
+      return undefined;
+    }
+  }
+
+  // Checks if two sets are equal: It expects that the elements el1 and el2 are equal iff el1 === el2.
+  static setEquals<T>(set1: Set<T>, set2: Set<T>): boolean {
+    return set1.size === set2.size && [...set1].every(el => set2.has(el));
+  }
+
+  static sleep(milliseconds: number): Promise<void> {
+    return new Promise<void>(resolve => {
+      setTimeout(() => resolve(), milliseconds);
+    });
+  }
 }

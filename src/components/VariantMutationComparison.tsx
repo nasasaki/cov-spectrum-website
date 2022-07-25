@@ -1,23 +1,24 @@
-import { LocationDateVariantSelector } from '../data/LocationDateVariantSelector';
 import { useQuery } from '../helpers/query-hook';
 import { MutationProportionData } from '../data/MutationProportionDataset';
 import Loader from './Loader';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ReferenceGenomeService } from '../services/ReferenceGenomeService';
-import _ from 'lodash';
 import Table from 'react-bootstrap/Table';
 import { formatVariantDisplayName } from '../data/VariantSelector';
 import ReactTooltip from 'react-tooltip';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Slider from 'rc-slider';
 import { sortAAMutationList } from '../helpers/aa-mutation';
+import { LapisSelector } from '../data/LapisSelector';
+import { pullAll } from '../helpers/lodash_alternatives';
 
 export interface Props {
-  selectors: LocationDateVariantSelector[];
+  selectors: LapisSelector[];
 }
 
 export const VariantMutationComparison = ({ selectors }: Props) => {
   const [minProportion, setMinProportion] = useState(0.5);
+
   const res = useQuery(
     signal => Promise.all(selectors.map(selector => MutationProportionData.fromApi(selector, 'aa', signal))),
     [selectors],
@@ -36,9 +37,9 @@ export const VariantMutationComparison = ({ selectors }: Props) => {
     const variant2Mutations = variant2.payload
       .filter(m => m.proportion >= minProportion)
       .map(m => m.mutation);
-    const shared = _.intersection(variant1Mutations, variant2Mutations);
-    const onlyVariant1 = _.pullAll(variant1Mutations, shared);
-    const onlyVariant2 = _.pullAll(variant2Mutations, shared);
+    const shared = [variant1Mutations, variant2Mutations].reduce((a, b) => a.filter(c => b.includes(c)));
+    const onlyVariant1 = pullAll(variant1Mutations, shared);
+    const onlyVariant2 = pullAll(variant2Mutations, shared);
     // Group by genes
     const genes = new Map<
       string,
@@ -107,9 +108,9 @@ export const VariantMutationComparison = ({ selectors }: Props) => {
             {(minProportion * 100).toFixed(0)}%
           </span>
         </OverlayTrigger>{' '}
-        of the samples of the variant have the mutation. Please note that we currently <b>do not</b> exclude
-        the unknowns when calculating the proportions.
+        of the samples of the variant have the mutation.
       </div>
+
       <div>
         <Table striped bordered hover>
           <thead>
@@ -137,6 +138,7 @@ export const VariantMutationComparison = ({ selectors }: Props) => {
             ))}
           </tbody>
         </Table>
+
         {data.map(({ gene, onlyVariant1, onlyVariant2, shared }) => (
           <>
             <ReactTooltip id={`${gene}-variant1`} key={`${gene}-variant1`}>

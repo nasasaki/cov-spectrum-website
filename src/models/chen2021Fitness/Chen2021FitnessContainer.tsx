@@ -1,21 +1,21 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ChangePoint, Chen2021FitnessRequest } from './chen2021Fitness-types';
-import { Button, Col, Form } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Chen2021FitnessResults } from './Chen2021FitnessResults';
 import { fillRequestWithDefaults, transformToRequestData } from './loading';
 import { ExternalLink } from '../../components/ExternalLink';
 import { DateCountSampleData } from '../../data/sample/DateCountSampleDataset';
 import { globalDateCache, UnifiedDay } from '../../helpers/date-cache';
-import { LocationDateVariantSelector } from '../../data/LocationDateVariantSelector';
 import dayjs from 'dayjs';
 import { useQuery } from '../../helpers/query-hook';
 import { FixedDateRangeSelector } from '../../data/DateRangeSelector';
 import Loader from '../../components/Loader';
 import { CaseCountData } from '../../data/CaseCountDataset';
+import { LapisSelector } from '../../data/LapisSelector';
 
 export type ContainerProps = {
-  selector: LocationDateVariantSelector;
+  selector: LapisSelector;
   defaults?: {
     startDate: UnifiedDay;
     initialWildtypeCases: number;
@@ -199,12 +199,18 @@ export const Chen2021FitnessContainer = ({ selector, defaults }: ContainerProps)
         <p>
           The model assumes that the increase or decrease of the proportion of a variant follows a logistic
           function. It fits a logistic model to the data by optimizing the maximum likelihood to obtain the
-          logistic growth rate a. From that, an estimate of the relative growth advantage under a continuous
-          (f_c) and discrete (f_d) model is derived.
+          logistic growth rate a in units per week. From that, an estimate of the growth advantage per week
+          (exp(a)-1) is obtained (assuming the growth advantage is due to a combination of intrinsic
+          transmission advantage, immune evasion, and a prolonged infectious period (Althaus, 2021)). Further,
+          the relative change in the reproductive number under a continuous (f<sub>c</sub>) and discrete (f
+          <sub>d</sub>) model is calculated ((Chen, 2021), assuming that the advantage stems either from an
+          increased transmission rate or immune escape). f<sub>c</sub> and f<sub>d</sub> come without time
+          units as they determine the change in the reproductive number which itself has no time unit
+          associated.
         </p>
         <SectionHeader>Parameters</SectionHeader>
         <Form>
-          <Form.Row>
+          <Row>
             <Form.Group as={Col} controlId='formGenerationTime'>
               <Form.Label>Generation time</Form.Label>
               <Form.Control
@@ -219,8 +225,8 @@ export const Chen2021FitnessContainer = ({ selector, defaults }: ContainerProps)
                 onChange={x => setFormReproductionNumberWildtype(x.target.value)}
               />
             </Form.Group>
-          </Form.Row>
-          <Form.Row>
+          </Row>
+          <Row>
             <Form.Group as={Col} controlId='formInitialWildtypeCases'>
               <Form.Label>Initial wildtype cases</Form.Label>
               <Form.Control
@@ -235,8 +241,8 @@ export const Chen2021FitnessContainer = ({ selector, defaults }: ContainerProps)
                 onChange={x => setFormInitialVariantCases(x.target.value)}
               />
             </Form.Group>
-          </Form.Row>
-          <Form.Row>
+          </Row>
+          <Row>
             <Form.Group as={Col} controlId='formPlotStartDate'>
               <Form.Label>Start date</Form.Label>
               <Form.Control value={formPlotStartDate} onChange={x => setFormPlotStartDate(x.target.value)} />
@@ -245,10 +251,10 @@ export const Chen2021FitnessContainer = ({ selector, defaults }: ContainerProps)
               <Form.Label>End date</Form.Label>
               <Form.Control value={formPlotEndDate} onChange={x => setFormPlotEndDate(x.target.value)} />
             </Form.Group>
-          </Form.Row>
+          </Row>
           <div className='font-bold'>Changes in reproduction number of the wildtype</div>
           {changePoints.map(({ reproductionNumberString, dateString }, i) => (
-            <Form.Row>
+            <Row>
               <Form.Group as={Col} controlId={`changePointDate-${i}`}>
                 <Form.Label>Date</Form.Label>
                 <Form.Control value={dateString} onChange={x => setChangePointDate(i, x.target.value)} />
@@ -269,7 +275,7 @@ export const Chen2021FitnessContainer = ({ selector, defaults }: ContainerProps)
               >
                 Remove
               </button>
-            </Form.Row>
+            </Row>
           ))}
         </Form>
         <div>

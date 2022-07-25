@@ -6,22 +6,64 @@ exports[`<VariantTimeDistributionBarChart> dataset0 renders correctly 1`] = `
 >
   <div
     className="flex flex-col h-full w-full"
-    id="chart-and-metrics-Proportion of all samples sequenced on week 01, 2022 "
+    id="chart-and-metrics-Proportion of all samples sequenced on week 52, 2021 "
   >
     <h3
       className="my-0 pb-4 pr-10 pt-0 text-gray-500"
-      id="chart-title-Proportion of all samples sequenced on week 01, 2022 "
+      id="chart-title-Proportion of all samples sequenced on week 52, 2021 "
     >
-      Proportion of all samples sequenced on week 01, 2022 
+      Proportion of all samples sequenced on week 52, 2021 
+      <div>
+        <div
+          className="mb-1 btn-toolbar"
+          role="toolbar"
+        >
+          <div
+            className="mt-1 ml-2"
+          >
+            <button
+              className="undefined bg-active-secondary hover:bg-active focus:ring-blue-500 focus:ring-offset-blue-200 px-2 text-white w-full transition ease-in duration-100 scale-110 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg "
+              onClick={[Function]}
+            >
+               
+              Proportion
+            </button>
+          </div>
+          <div
+            className="mt-1 ml-2"
+          >
+            <button
+              className="undefined bg-gray-400 hover:bg-gray-500 focus:ring-gray-500 focus:ring-offset-gray-200 px-2 text-white w-full transition ease-in duration-100 scale-110 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg "
+              onClick={[Function]}
+            >
+               
+              Absolute
+            </button>
+          </div>
+        </div>
+      </div>
     </h3>
     <div
       className="flex flex-col lg:flex-row h-full"
     >
       <div
         className="h-full w-full"
-      />
+      >
+        <div
+          className="recharts-responsive-container"
+          style={
+            Object {
+              "height": "100%",
+              "maxHeight": undefined,
+              "minHeight": undefined,
+              "minWidth": undefined,
+              "width": "100%",
+            }
+          }
+        />
+      </div>
       <div
-        className="pl-2 pt-1 flex flex-row w-full sm:w-auto md:justify-end sm:flex-col sm:pt-0 sm:pl-1 sm:pb-8  md:mt-auto"
+        className="pl-2 pt-3 flex lg:inline flex-row w-full sm:w-auto md:justify-end sm:flex-col sm:pt-0 sm:pl-1 sm:pb-8  md:mt-auto"
       >
         <div
           className="flex flex-col justify-end pr-1 mb-2 overflow-hidden h-full w-auto"
@@ -35,7 +77,7 @@ exports[`<VariantTimeDistributionBarChart> dataset0 renders correctly 1`] = `
               className="flex w-full"
             >
               <div
-                className="w-auto grow-0 text-3xl md:text-5xl"
+                className="w-auto grow-0 text-xl sm:text-3xl md:text-5xl"
                 style={
                   Object {
                     "color": "#1F407A",
@@ -46,7 +88,7 @@ exports[`<VariantTimeDistributionBarChart> dataset0 renders correctly 1`] = `
                 %
               </div>
               <div
-                className="sc-bdfBwQ kGXcMt self-end"
+                className="sc-bczRLJ dWCPvX self-end"
               />
             </div>
             <div
@@ -77,10 +119,10 @@ exports[`<VariantTimeDistributionBarChart> dataset0 renders correctly 1`] = `
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12 6C9.831 6 8.066 7.765 8.066 9.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626-.255.207-.496.404-.691.599C11.029 13.156 11 14.215 11 14.333V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182C15.934 7.765 14.169 6 12 6zM11 16H13V18H11z"
+                    d="M12 6a3.939 3.939 0 0 0-3.934 3.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626a9.208 9.208 0 0 0-.691.599c-.998.997-1.027 2.056-1.027 2.174V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182A3.937 3.937 0 0 0 12 6zm-1 10h2v2h-2z"
                   />
                   <path
-                    d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10s10-4.486,10-10S17.514,2,12,2z M12,20c-4.411,0-8-3.589-8-8s3.589-8,8-8 s8,3.589,8,8S16.411,20,12,20z"
+                    d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"
                   />
                 </svg>
               </div>
@@ -92,6 +134,7 @@ exports[`<VariantTimeDistributionBarChart> dataset0 renders correctly 1`] = `
             id="metric-tooltip-Proportion"
           >
             <style
+              aria-hidden="true"
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "
@@ -186,7 +229,7 @@ exports[`<VariantTimeDistributionBarChart> dataset0 renders correctly 1`] = `
               className="flex w-full"
             >
               <div
-                className="w-auto grow-0 text-3xl md:text-5xl"
+                className="w-auto grow-0 text-xl sm:text-3xl md:text-5xl"
                 style={
                   Object {
                     "color": "#7f8c8d",
@@ -196,7 +239,7 @@ exports[`<VariantTimeDistributionBarChart> dataset0 renders correctly 1`] = `
                 0
               </div>
               <div
-                className="sc-bdfBwQ kGXcMt self-end"
+                className="sc-bczRLJ dWCPvX self-end"
               />
             </div>
             <div
@@ -227,10 +270,10 @@ exports[`<VariantTimeDistributionBarChart> dataset0 renders correctly 1`] = `
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12 6C9.831 6 8.066 7.765 8.066 9.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626-.255.207-.496.404-.691.599C11.029 13.156 11 14.215 11 14.333V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182C15.934 7.765 14.169 6 12 6zM11 16H13V18H11z"
+                    d="M12 6a3.939 3.939 0 0 0-3.934 3.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626a9.208 9.208 0 0 0-.691.599c-.998.997-1.027 2.056-1.027 2.174V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182A3.937 3.937 0 0 0 12 6zm-1 10h2v2h-2z"
                   />
                   <path
-                    d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10s10-4.486,10-10S17.514,2,12,2z M12,20c-4.411,0-8-3.589-8-8s3.589-8,8-8 s8,3.589,8,8S16.411,20,12,20z"
+                    d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"
                   />
                 </svg>
               </div>
@@ -242,6 +285,7 @@ exports[`<VariantTimeDistributionBarChart> dataset0 renders correctly 1`] = `
             id="metric-tooltip-Samples"
           >
             <style
+              aria-hidden="true"
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "

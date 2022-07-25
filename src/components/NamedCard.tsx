@@ -14,6 +14,7 @@ export type TabConfig = {
   labels: string[];
   activeTabIndex: number;
   onNewTabSelect: (tabIndex: number) => void;
+  labelWidth?: number;
 };
 
 interface Props {
@@ -64,34 +65,15 @@ export const TabbedCard = ({
       {tabConfig.labels.map((label, index) => (
         <button
           key={label}
-          className={`p-2 shadow-lg w-40 text-center text-sm outline-none rounded-b -mt-1
+          className={`p-2 shadow-lg text-center text-sm outline-none rounded-b -mt-1
             ${
               tabConfig.activeTabIndex === index
                 ? 'relative bg-white cursor-default border-b-2 border-black font-bold'
                 : 'bg-gray-100 text-gray-500'
             }
           `}
-          onClick={_ => {
-            tabConfig.onNewTabSelect(index);
-
-            //let graphs = Array.from(
-            //  document.getElementsByClassName('recharts-responsive-container') as HTMLCollectionOf<HTMLElement>
-            //);
-            //for (let i = 0; i < graphs.length; i++) {
-            //  let graph = graphs[i]
-            //  if (graph.offsetHeight === 0) {
-            //    let minHeight = Math.min(400, graph.offsetWidth*2/3)
-            //    graphs[i].style.height = `${minHeight.toString()}px`;
-            //  }
-            //}
-
-            //let chartBoxes = Array.from(
-            //  document.getElementsByClassName('chart-box') as HTMLCollectionOf<HTMLElement>
-            //);
-            //for (let i = 0; i < chartBoxes.length; i++) {
-            //  chartBoxes[i].style.height = 'initial';
-            //}
-          }}
+          style={{ width: tabConfig.labelWidth ?? 200 }}
+          onClick={_ => tabConfig.onNewTabSelect(index)}
         >
           {label}
         </button>
@@ -171,7 +153,7 @@ export const NamedCard = ({
             <ExpandableTextBox text={description} maxChars={60} />
           </div>
         )}
-        <ToolbarWrapper>{toolbar}</ToolbarWrapper>
+        <ToolbarWrapper className='static lg:absolute'>{toolbar}</ToolbarWrapper>
         <ContentWrapper>{children}</ContentWrapper>
       </Sentry.ErrorBoundary>
     </SelectedCard>

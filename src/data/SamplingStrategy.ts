@@ -2,7 +2,8 @@
 
 export enum SamplingStrategy {
   AllSamples = 'AllSamples',
-  Surveillance = 'Surveillance',
+  AirportQuarantine = 'AirportQuarantine',
+  DomesticSamples = 'DomesticSamples'
 }
 
 export function decodeSamplingStrategy(encoded: string): SamplingStrategy | null {
@@ -19,7 +20,10 @@ export function addSamplingStrategyToUrlSearchParams(
   if (samplingStrategy === SamplingStrategy.AllSamples) {
     return;
   }
-  if (samplingStrategy === SamplingStrategy.Surveillance) {
-    params.set('samplingStrategy', 'Baseline surveillance');
+  if (samplingStrategy === SamplingStrategy.AirportQuarantine) {
+    params.set('samplingStrategy', 'Airport');
+  }
+  if (samplingStrategy === SamplingStrategy.DomesticSamples) {
+    params.set('samplingStrategy', 'Domestic');
   }
 }
