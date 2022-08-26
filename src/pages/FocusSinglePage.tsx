@@ -8,7 +8,7 @@ import { VariantLineages } from '../components/VariantLineages';
 import { GridCell, PackedGrid } from '../components/PackedGrid';
 import { VariantTimeDistributionChartWidget } from '../widgets/VariantTimeDistributionChartWidget';
 import { EstimatedCasesChartWidget } from '../widgets/EstimatedCasesChartWidget';
-import { VariantInternationalComparisonChartWidget } from '../widgets/VariantInternationalComparisonChartWidget';
+//import { VariantInternationalComparisonChartWidget } from '../widgets/VariantInternationalComparisonChartWidget.ts.BAK';
 import { VariantDivisionDistributionChartWidget } from '../widgets/VariantDivisionDistributionChartWidget';
 import { DivisionCountSampleData } from '../data/sample/DivisionCountSampleDataset';
 import { NamedCard } from '../components/NamedCard';
@@ -370,7 +370,7 @@ export const FocusSinglePage = () => {
                   />
                 </GridCell>
               )}
-              <GridCell minWidth={600}>
+              {/* <GridCell minWidth={600}>
                 <VariantInternationalComparisonChartWidget.ShareableComponent
                   preSelectedCountries={country ? [country] : []}
                   height={300}
@@ -380,7 +380,7 @@ export const FocusSinglePage = () => {
                   wholeInternationalSampleSet={wholeInternationalDateCount.data}
                   logScale={false}
                 />
-              </GridCell>
+              </GridCell> */}
               <GridCell minWidth={600}>
                 <VariantDivisionDistributionChartWidget.ShareableComponent
                   title='Geographic distribution'

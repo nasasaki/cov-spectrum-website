@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import { PlaceSelect } from './PlaceSelect';
 import {
   decodeLocationSelectorFromSingleString,
@@ -20,19 +20,19 @@ export const RequiredPlaceSelect = ({ id, selected, onSelect }: Props) => {
   return (
     <PlaceSelect
       id={id ? id : 'place-select'}
-      selected={menuVisible ? visuallySelected : locationString}
+      selected={menuVisible ? visuallySelected as LocationSelector: locationString as LocationSelector}
       onSelect={place => {
-        setVisuallySelected(place);
+        setVisuallySelected(place as SetStateAction<string|undefined>);
         if (place) {
-          onSelect(decodeLocationSelectorFromSingleString(place));
+          onSelect(decodeLocationSelectorFromSingleString(place as string));
         }
       }}
-      onMenuToggle={show => {
-        setMenuVisible(show);
-        if (!show) {
-          setVisuallySelected(undefined);
-        }
-      }}
+      // onMenuToggle={(show: boolean) => {
+      //   setMenuVisible(show);
+      //   if (!show) {
+      //     setVisuallySelected(undefined);
+      //   }
+      // }}
     />
   );
 };

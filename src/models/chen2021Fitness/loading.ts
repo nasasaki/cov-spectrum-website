@@ -11,7 +11,7 @@ import { useQuery } from '../../helpers/query-hook';
 import { DateCountSampleDataset } from '../../data/sample/DateCountSampleDataset';
 import dayjs from 'dayjs';
 
-const endpoint = 'http://192.168.114.46:8080/api/computed/model/chen2021Fitness';
+const endpoint = process.env.REACT_APP_WEBSITE_HOST + 'computed/model/chen2021Fitness';
 
 export const transformToRequestData = (
   variantDateCounts: DateCountSampleDataset,

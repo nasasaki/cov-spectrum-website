@@ -8,6 +8,7 @@ import {
   LocationSelector,
 } from '../data/LocationSelector';
 export interface Props {
+  id?: string;
   selected: LocationSelector;
   onSelect: (place: LocationSelector) => void;
 }

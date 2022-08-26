@@ -15,6 +15,8 @@ import { FocusCompareEqualsPage } from './FocusCompareEqualsPage';
 import { FocusCompareToBaselinePage } from './FocusCompareToBaselinePage';
 import { getLocation } from '../helpers/get-location';
 import { formatVariantDisplayName } from '../data/VariantSelector';
+import dayjs from 'dayjs';
+import { getCurrentLapisDataVersionDate } from '../data/api-lapis';
 
 type Props = {
   isSmallScreen: boolean;
@@ -104,6 +106,7 @@ export const FocusPage = ({ isSmallScreen }: Props) => {
                 🌟 <b>insertions</b> 🌟 (
                 <InternalLink path='/about#faq-search-variants'>see documentation</InternalLink>):
               </p>
+              <div>The sequence data was updated: <b style={{ color: "#d63384" }}>{dayjs(getCurrentLapisDataVersionDate()).calendar()}</b>{' '}(Present time: {Date().toLocaleString()})</div>
             </div>
           )}
           <div
