@@ -6,7 +6,7 @@ import {
 } from './types';
 import { globalDateCache } from '../../helpers/date-cache';
 
-const endpoint = process.env.REACT_APP_WEBSITE_HOST + 'computed/model/huismanScire2021Re';
+const endpoint = 'http://192.168.114.46:8080/api/computed/model/huismanScire2021Re';
 
 export async function getResult(
   cases: EstimatedCasesPlotEntry[],

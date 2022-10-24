@@ -49,6 +49,11 @@ export const AboutPage = () => {
         </ExternalLink>{' '}
         or send an email to <EmailLink email='chaoran.chen@bsse.ethz.ch' />.
       </p>
+      <h2>Notice for covSpectrum</h2>
+      <p>
+        <b>covSPECTRUM</b> is an dataset adoptation of the original CoV-Spectrum for COG-JP data collaboration
+         consorthium. All data copyright belongs to COG-JP consotrium.
+      </p>
       <p>
         CoV-Spectrum uses the{' '}
         <ExternalLink url='https://github.com/cevo-public/LAPIS'>LAPIS API</ExternalLink> to filter and

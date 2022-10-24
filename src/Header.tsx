@@ -13,7 +13,7 @@ import { AlmostFullscreenModal } from './components/AlmostFullscreenModal';
 import { AdvancedFiltersPanel } from './components/AdvancedFiltersPanel';
 
 const letters = [
-  { color: 'darkgray', text: 'cog-jp' },
+  { color: 'darkgray', text: 'cov' },
   { color: '#0D4A70', text: 'S' },
   { color: '#245C70', text: 'P' },
   { color: '#3A6E6F', text: 'E' },

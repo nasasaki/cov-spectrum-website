@@ -8,6 +8,7 @@ import './index.css';
 import { fetchCurrentUserCountry } from './data/api';
 import { LocationService } from './services/LocationService';
 import { fetchLapisDataVersionDate } from './data/api-lapis';
+// for SENTRY Debug
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 import { env } from './env';

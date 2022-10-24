@@ -6,8 +6,8 @@ import minMax from 'dayjs/plugin/minMax';
 import weekday from 'dayjs/plugin/weekday';
 import calendar from 'dayjs/plugin/calendar';
 
-require('dayjs/locale/ja');
-dayjs.locale('ja');
+require('dayjs/locale/en');
+dayjs.locale('en');
 dayjs.extend(isoWeek);
 dayjs.extend(utc);
 dayjs.extend(minMax);
