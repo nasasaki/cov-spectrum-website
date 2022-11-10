@@ -80,9 +80,7 @@ export const VariantMutations = ({ selector }: Props) => {
       const overallSelector: LapisSelector = {
         location: selector.location,
         dateRange: selector.dateRange,
-        host: selector.host,
         samplingStrategy: selector.samplingStrategy,
-        qc: selector.qc,
       };
       return Promise.all([
         MutationProportionData.fromApi(overallSelector, 'aa', signal, 0),
@@ -98,7 +96,7 @@ export const VariantMutations = ({ selector }: Props) => {
         return { aa, nuc };
       });
     },
-    [selector.location, selector.dateRange, selector.host, selector.samplingStrategy, selector.qc]
+    [selector.location, selector.dateRange, selector.samplingStrategy]
   );
 
   const queryStatus = useQuery(

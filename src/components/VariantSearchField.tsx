@@ -172,7 +172,7 @@ export const VariantSearchField = ({ onVariantSelect, currentSelection, triggerS
   const nextstrainCladesSet = useQuery(
     signal =>
       _fetchAggSamples(
-        { location: {}, samplingStrategy: SamplingStrategy.AllSamples, host: undefined, qc: {} },
+        { location: {}, samplingStrategy: SamplingStrategy.AllSamples },
         ['nextstrainClade'],
         signal
       ).then(dataset => new Set(dataset.filter(e => e.nextstrainClade).map(e => e.nextstrainClade!))),
