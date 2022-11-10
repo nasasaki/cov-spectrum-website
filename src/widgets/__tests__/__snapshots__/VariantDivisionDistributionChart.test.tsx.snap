@@ -4,6 +4,7 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
 <div
   className="relative h-full"
 >
+  <br />
   <div
     className="flex flex-col h-full w-full"
     id="chart-and-metrics-Average proportion during selected timeframe"
@@ -41,13 +42,17 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
               },
               Object {
                 "count": 34,
+                "country": "Germany",
                 "division": "Hesse",
                 "prevalence": 0.4649254751811842,
+                "region": "Europe",
               },
               Object {
                 "count": 13,
+                "country": "Germany",
                 "division": "Niedersachsen",
                 "prevalence": 0.2896613190730838,
+                "region": "Europe",
               },
               Object {
                 "count": 24,
@@ -61,6 +66,7 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
               },
               Object {
                 "count": 12,
+                "country": "Germany",
                 "division": "Rheinland-Pfalz",
                 "prevalence": 0.22927015666794037,
               },
@@ -81,11 +87,28 @@ exports[`<VariantDivisionDistributionChart> dataset0 renders correctly 1`] = `
               },
               Object {
                 "count": 30,
+                "country": "Germany",
                 "division": "Schleswig-Holstein",
                 "prevalence": 0.2996703626011388,
+                "region": "Europe",
+              },
+              Object {
+                "count": 2,
+                "country": "Germany",
+                "division": "Saarland",
+                "prevalence": 0.09229349330872173,
+                "region": "Europe",
+              },
+              Object {
+                "count": 7,
+                "country": "Germany",
+                "division": "Saxony",
+                "prevalence": 0.05544993662864385,
+                "region": "Europe",
               },
               Object {
                 "count": 1,
+                "country": "Germany",
                 "division": "Thuringia",
                 "prevalence": 0.03367003367003367,
               },

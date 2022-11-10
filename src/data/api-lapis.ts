@@ -21,8 +21,6 @@ import { addSamplingStrategyToUrlSearchParams } from './SamplingStrategy';
 import { DatelessCountrylessCountSampleEntry } from './sample/DatelessCountrylessCountSampleEntry';
 import { HospDiedAgeSampleEntry } from './sample/HospDiedAgeSampleEntry';
 import { LapisSelector } from './LapisSelector';
-import { addHostSelectorToUrlSearchParams } from './HostSelector';
-import { addQcSelectorToUrlSearchParams } from './QcSelector';
 import { HostCountSampleEntry } from './sample/HostCountSampleEntry';
 import { sequenceDataSource } from '../helpers/sequence-data-source';
 import { InsertionCountEntry } from './InsertionCountEntry';
@@ -237,10 +235,10 @@ export async function getLinkTo(
   if (selector.samplingStrategy) {
     addSamplingStrategyToUrlSearchParams(selector.samplingStrategy, params);
   }
-  if (selector.host) {
-    addHostSelectorToUrlSearchParams(selector.host, params);
-  }
-  addQcSelectorToUrlSearchParams(selector.qc, params);
+  // if (selector.host) {
+  //   addHostSelectorToUrlSearchParams(selector.host, params);
+  // }
+  // addQcSelectorToUrlSearchParams(selector.qc, params);
   if (downloadAsFile) {
     params.set('downloadAsFile', 'true');
   }

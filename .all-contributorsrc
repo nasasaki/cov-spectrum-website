@@ -97,6 +97,34 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "dameyerdave",
+      "name": "David Meyer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5663605?v=4",
+      "profile": "https://github.com/dameyerdave",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "anastasia-escher",
+      "name": "Anastasia Escher",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52914023?v=4",
+      "profile": "https://github.com/anastasia-escher",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "theosanderson",
+      "name": "Theo Sanderson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19732295?v=4",
+      "profile": "http://theo.io/",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LocationService } from '../services/LocationService';
 import { useQuery } from '../helpers/query-hook';
 import { Autocomplete, Box, TextField } from '@mui/material';
@@ -13,40 +13,34 @@ export interface Props {
   onSelect: (place: LocationSelector) => void;
 }
 
-const regions = ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'];
-
 export const PlaceSelect = ({ onSelect, selected }: Props) => {
-  const [value, setValue] = useState<string | null>(encodeLocationSelectorToSingleString(selected));
+  const [value, setValue] = useState<string | null>('');
 
   useEffect(() => {
     const locationString = encodeLocationSelectorToSingleString(selected);
     setValue(locationString);
   }, [selected]);
 
-  const countries = useQuery(() => LocationService.getCountries(), []).data?.sort();
+  const places: string[] = useQuery(() => LocationService.getAllLocationNames(), []).data ?? [];
 
-  const geoOptions = useMemo(() => {
-    if (!countries) {
-      return undefined;
-    }
-    const geoOptions: { group: string; place: string; code?: string }[] = [
-      { group: 'World', place: 'World' },
-    ];
-    for (const region of regions) {
-      geoOptions.push({ group: 'Regions', place: region });
-    }
-    for (const country of countries) {
-      geoOptions.push({
-        group: 'Countries',
-        place: country,
-        code: LocationService.getIsoAlpha2Code(country),
-      });
-    }
-    return geoOptions;
-  }, [countries]);
+  const regions: string[] = ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'];
+  let countries: string[] = places
+    .filter(place => place !== 'Japan' && place !== 'World' && !regions.includes(place))
+    .sort();
 
-  if (!geoOptions) {
-    return <></>;
+  const geoOptions: { group: string; place: string; code?: string }[] = [{ group: 'World', place: 'World' }];
+
+  for (const region of regions) {
+    geoOptions.push({ group: 'Regions', place: region });
+  }
+  geoOptions.push({
+    group: 'Countries',
+    place: 'Japan',
+    code: 'JP',
+  });
+
+  for (const country of countries) {
+    geoOptions.push({ group: 'Countries', place: country, code: LocationService.getIsoAlpha2Code(country) });
   }
 
   return (

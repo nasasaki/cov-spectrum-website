@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PangoLineageAliasResolverService } from '../services/PangoLineageAliasResolverService';
-import { formatVariantDisplayName, VariantSelector } from '../data/VariantSelector';
+import { getWHOLabel, getWHOVariantType } from '../services/who-label';
+import { formatVariantDisplayName, variantIsOnlyDefinedBy, VariantSelector } from '../data/VariantSelector';
 import { DateRangeSelector } from '../data/DateRangeSelector';
 
 export interface Props {
@@ -12,6 +13,13 @@ export interface Props {
 
 export const VariantHeader = ({ variant, titleSuffix, controls }: Props) => {
   const [resolvedFullName, setResolvedFullName] = useState<string | undefined>();
+
+  const label = variantIsOnlyDefinedBy(variant, 'pangoLineage')
+  ? getWHOLabel(variant.pangoLineage!)
+  : undefined;
+const type = variantIsOnlyDefinedBy(variant, 'pangoLineage')
+  ? getWHOVariantType(variant.pangoLineage!)
+  : undefined;
 
   useEffect(() => {
     let isSubscribed = true;
@@ -35,7 +43,14 @@ export const VariantHeader = ({ variant, titleSuffix, controls }: Props) => {
       <div className='flex'>
         <div className='flex-grow flex flex-row flex-wrap items-end'>
           <h1 className='md:mr-2'>
-            {formatVariantDisplayName(variant)}
+            {!variant.variantQuery ? (
+              <>
+                {formatVariantDisplayName(variant)}
+                {label && ` (${label})`}
+              </>
+            ) : (
+              <>{variant.variantQuery}</>
+            )}
             {!!titleSuffix && ' - '}
             {titleSuffix}
           </h1>

@@ -4,29 +4,53 @@
     "fillUpUntil": 12,
     "variants": [
       {
-        "pangoLineage": "B.1.1.529*"
+        "variantQuery": "nextcladePangoLineage:BA.2.75*"
       },
       {
-        "pangoLineage": "BA.1*"
+        "variantQuery": "nextcladePangoLineage:BA.4*"
+      },
+      {
+        "variantQuery": "nextcladePangoLineage:BA.5*"
+      },
+      {
+        "pangoLineage": "BA.2*",
+        "aaMutations": ["S:452Q"]
+      },
+      {
+        "pangoLineage": "BA.2*",
+        "aaMutations": ["S:452R"],
+        "nucMutations": ["9866T", "12160G"]
+      },
+      {
+        "pangoLineage": "BA.2*",
+        "aaMutations": ["S:452M"]
+      },
+      {
+        "pangoLineage": "BA.2*",
+        "aaMutations": ["S:68T"]
+      },
+      {
+        "pangoLineage": "BA.2*",
+        "aaMutations": ["S:417T"]
+      },
+      {
+        "pangoLineage": "BA.2*",
+        "aaMutations": ["S:64R"]
+      },
+      {
+        "pangoLineage": "BA.2*",
+        "aaMutations": ["S:248H"]
+      },
+      {
+        "pangoLineage": "BA.2*",
+        "aaMutations": ["S:212S"]
+      },
+      {
+        "pangoLineage": "BA.2*",
+        "aaMutations": ["S:356R"]
       },
       {
         "pangoLineage": "BA.2*"
-      },
-      {
-        "pangoLineage": "B.1.617.2*",
-        "aaMutations": []
-      },
-      {
-        "pangoLineage": "B.1.1.7*",
-        "aaMutations": []
-      },
-      {
-        "pangoLineage": "B.1.351*",
-        "aaMutations": []
-      },
-      {
-        "pangoLineage": "P.1*",
-        "aaMutations": []
       }
     ]
   },

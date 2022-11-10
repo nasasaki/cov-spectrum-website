@@ -84,8 +84,6 @@ export const CollectionSingleViewPage = () => {
         [{ query: baselineVariant }, ...variants].map(variant =>
           DateCountSampleData.fromApi(
             {
-              host: undefined,
-              qc: {},
               location: locationSelector,
               variant: variant.query,
               samplingStrategy: SamplingStrategy.AllSamples,
@@ -120,8 +118,6 @@ export const CollectionSingleViewPage = () => {
           if (!variantIsAllLineages(baselineVariant)) {
             return DateCountSampleData.fromApi(
               {
-                host: undefined,
-                qc: {},
                 location: locationSelector,
                 variant: {
                   variantQuery: `(${transformToVariantQuery(variant.query)})  | (${transformToVariantQuery(
@@ -152,8 +148,6 @@ export const CollectionSingleViewPage = () => {
         variants.map(variant =>
           fetchNumberSubmittedSamplesInPastTenDays(
             {
-              host: undefined,
-              qc: {},
               location: locationSelector,
               variant: variant.query,
               samplingStrategy: SamplingStrategy.AllSamples,

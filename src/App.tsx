@@ -50,7 +50,9 @@ export const App = () => {
   return (
     <div className='w-full'>
       {/* Header */}
-      <Header />
+      <div className='h-32 md:h-20'>
+        <Header />
+      </div>
       <div ref={ref} className='w-full'>
         {/* Preview warning */}
         {isPreview && (
