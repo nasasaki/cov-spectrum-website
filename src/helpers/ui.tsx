@@ -129,7 +129,7 @@ export const ShowMoreButton = ({ to }: { to: string }) => {
  * <p>
  * <u>Option 1</u> | <b>Option 2</b> | <u>Option 3</u>
  */
- export const PipeDividedOptionsButtons = <T extends unknown>({
+export const PipeDividedOptionsButtons = <T extends unknown>({
   options,
   selected,
   onSelect,

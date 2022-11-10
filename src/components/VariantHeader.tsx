@@ -23,11 +23,16 @@ const type = variantIsOnlyDefinedBy(variant, 'pangoLineage')
 
   useEffect(() => {
     let isSubscribed = true;
-    if (variant.pangoLineage === undefined) {
+    if (variant.pangoLineage === undefined && variant.nextcladePangoLineage === undefined) {
       setResolvedFullName(undefined);
       return;
     }
-    PangoLineageAliasResolverService.findFullName(variant.pangoLineage).then(name => {
+    const pangoLineage: string = variant.pangoLineage
+      ? variant.pangoLineage
+      : variant.nextcladePangoLineage
+      ? variant.nextcladePangoLineage
+      : '';
+    PangoLineageAliasResolverService.findFullName(pangoLineage).then(name => {
       if (isSubscribed) {
         setResolvedFullName(name);
       }
@@ -35,7 +40,7 @@ const type = variantIsOnlyDefinedBy(variant, 'pangoLineage')
     return () => {
       isSubscribed = false;
     };
-  }, [variant.pangoLineage]);
+  }, [variant.pangoLineage, variant.nextcladePangoLineage]);
 
   return (
     <div className='pt-10 lg:pt-0 ml-1 md:ml-3 w-full relative'>
@@ -54,6 +59,7 @@ const type = variantIsOnlyDefinedBy(variant, 'pangoLineage')
             {!!titleSuffix && ' - '}
             {titleSuffix}
           </h1>
+          {type && <h3 className='text-gray-500 sm:mr-2'>{`variant of ${type}`}</h3>}
         </div>
       </div>
       {resolvedFullName && <h3 className=' text-gray-500'>Alias for {resolvedFullName}</h3>}

@@ -76,7 +76,9 @@ export const VariantMutationsTimelines = ({ selector }: Props) => {
           >
             <option value='all'>All</option>
             {ReferenceGenomeService.genes.map(g => (
-              <option value={g}>{g}</option>
+              <option value={g} key={g}>
+                {g}
+              </option>
             ))}
           </Form.Control>
         </div>
@@ -194,7 +196,7 @@ const useData = (
       if (sequenceType === 'aa' && gene !== 'all') {
         filteredMutations = filteredMutations.filter(m => m.mutation.startsWith(gene + ':'));
       }
-      if (filteredMutations.length > 50) {
+      if (filteredMutations.length > 70) {
         return 'too-big';
       }
       const variantAsVariantQuery = transformToVariantQuery(selector.variant ?? {});
@@ -314,11 +316,19 @@ const Plot = ({ data, logitScale, colorScale }: PlotProps) => {
       >
         {data.mutations.map(({ mutation, proportions, counts }, i) => (
           <>
-            <div className='text-right pr-4' style={{ gridRowStart: i + 1, gridColumnStart: 1 }}>
+            <div
+              className='text-right pr-4'
+              key={mutation}
+              style={{ gridRowStart: i + 1, gridColumnStart: 1 }}
+            >
               {mutation}
             </div>
             {proportions.map((p, j) => (
-              <div style={{ gridRowStart: i + 1, gridColumnStart: j + 2 }} className='py-1'>
+              <div
+                style={{ gridRowStart: i + 1, gridColumnStart: j + 2 }}
+                className='py-1'
+                key={mutation + j}
+              >
                 <ProportionBox
                   mutation={mutation}
                   week={data.weeks[j]}
@@ -408,6 +418,21 @@ const ProportionBox = ({
       </Popover.Body>
     </Popover>
   );
+
+  return (
+    <OverlayTrigger
+      trigger={['hover', 'focus', 'click']}
+      overlay={popover}
+      rootClose={true}
+      transition={false}
+      placement='top'
+    >
+      <div style={{ backgroundColor, color }} className='text-xs	text-center w-full h-full hover:font-bold'>
+        {value}
+      </div>
+    </OverlayTrigger>
+  );
+};
 
   return (
     <OverlayTrigger

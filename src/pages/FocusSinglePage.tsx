@@ -33,7 +33,6 @@ import { Utils } from '../services/Utils';
 import { useDeepCompareMemo } from '../helpers/deep-compare-hooks';
 import { WasteWaterDataset } from '../models/wasteWater/types';
 import { filter, getData } from '../models/wasteWater/loading';
-import { WASTE_WATER_AVAILABLE_LINEAGES } from '../models/wasteWater/WasteWaterDeepFocus';
 import { WasteWaterSummaryTimeWidget } from '../models/wasteWater/WasteWaterSummaryTimeWidget';
 import { HospDiedAgeSampleData } from '../data/sample/HospDiedAgeSampleDataset';
 import { HospitalizationDeathChartWidget } from '../widgets/HospitalizationDeathChartWidget';
@@ -53,7 +52,7 @@ const SWISS_SPECIALTIES_ACTIVATED = false;
 
 export const FocusSinglePage = () => {
   const exploreUrl = useExploreUrl();
-  const [lineageDistributionIndex, setLineageDistributionIndex] = useState(0);
+  const [lineageDistributionIndex, setLineageDistributionIndex] = useState(1);
   const [showVariantTimeDistributionDivGrid, setShowVariantTimeDistributionDivGrid] = useState(false);
   const [showEstimatedCasesDivGrid, setShowEstimatedCasesDivGrid] = useState(false);
   const [showVariantAgeDistributionDivGrid, setShowVariantAgeDistributionDivGrid] = useState(false);
@@ -254,40 +253,40 @@ export const FocusSinglePage = () => {
   }
 
   // Wastewater plot
-  let wasteWaterSummaryPlot = undefined;
-  if (
-    country === 'Switzerland' &&
-    pangoLineageWithoutAsterisk &&
-    WASTE_WATER_AVAILABLE_LINEAGES.includes(pangoLineageWithoutAsterisk)
-  ) {
-    if (wasteWaterData) {
-      wasteWaterSummaryPlot = (
-        <GridCell minWidth={600}>
-          <WasteWaterSummaryTimeWidget.ShareableComponent
-            country={country}
-            title='Wastewater prevalence'
-            variantName={pangoLineageWithoutAsterisk}
-            wasteWaterPlants={wasteWaterData.map(({ location, data }) => ({
-              location,
-              data: data.timeseriesSummary,
-            }))}
-            height={300}
-            toolbarChildren={deepFocusButtons.wasteWater}
-          />
-        </GridCell>
-      );
-    } else {
-      wasteWaterSummaryPlot = (
-        <GridCell minWidth={600}>
-          <NamedCard title='Wastewater prevalence' toolbar={deepFocusButtons.wasteWater}>
-            <div style={{ height: 300, width: '100%' }}>
-              <Loader />
-            </div>
-          </NamedCard>
-        </GridCell>
-      );
-    }
-  }
+  // let wasteWaterSummaryPlot = undefined;
+  // if (
+  //   country === 'Switzerland' &&
+  //   pangoLineageWithoutAsterisk &&
+  //   wastewaterVariantColors.hasOwnProperty(pangoLineageWithoutAsterisk)
+  // ) {
+  //   if (wasteWaterData) {
+  //     wasteWaterSummaryPlot = (
+  //       <GridCell minWidth={600}>
+  //         <WasteWaterSummaryTimeWidget.ShareableComponent
+  //           country={country}
+  //           title='Wastewater prevalence'
+  //           variantName={pangoLineageWithoutAsterisk}
+  //           wasteWaterPlants={wasteWaterData.map(({ location, data }) => ({
+  //             location,
+  //             data: data.timeseriesSummary,
+  //           }))}
+  //           height={300}
+  //           toolbarChildren={deepFocusButtons.wasteWater}
+  //         />
+  //       </GridCell>
+  //     );
+  //   } else {
+  //     wasteWaterSummaryPlot = (
+  //       <GridCell minWidth={600}>
+  //         <NamedCard title='Wastewater prevalence' toolbar={deepFocusButtons.wasteWater}>
+  //           <div style={{ height: 300, width: '100%' }}>
+  //             <Loader />
+  //           </div>
+  //         </NamedCard>
+  //       </GridCell>
+  //     );
+  //   }
+  // }
 
   // Everything else
 
