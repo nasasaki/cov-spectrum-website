@@ -433,18 +433,3 @@ const ProportionBox = ({
     </OverlayTrigger>
   );
 };
-
-  return (
-    <OverlayTrigger
-      trigger={['hover', 'focus']}
-      overlay={popover}
-      rootClose={true}
-      transition={false}
-      placement='top'
-    >
-      <div style={{ backgroundColor, color }} className='text-xs	text-center w-full h-full hover:font-bold'>
-        {value}
-      </div>
-    </OverlayTrigger>
-  );
-};
