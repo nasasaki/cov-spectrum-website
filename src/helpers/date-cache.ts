@@ -6,8 +6,8 @@ import minMax from 'dayjs/plugin/minMax';
 import weekday from 'dayjs/plugin/weekday';
 import calendar from 'dayjs/plugin/calendar';
 
-require('dayjs/locale/en');
-dayjs.locale('en');
+require('dayjs/locale/ja');
+dayjs.locale('ja');
 dayjs.extend(isoWeek);
 dayjs.extend(utc);
 dayjs.extend(minMax);
@@ -131,6 +131,12 @@ class DateCache {
       output.push(this.getDayUsingDayjs(min.dayjs.add(i, 'day')));
     }
     return output;
+  }
+
+  middleDay({ min, max }: { min: UnifiedDay; max: UnifiedDay }): UnifiedDay {
+    const diff = Math.abs(min.dayjs.diff(max.dayjs, 'days'));
+    const middle = min.dayjs.add(Math.floor(diff / 2), 'days');
+    return this.getDayUsingDayjs(middle);
   }
 
   rangeFromWeeks(weeks: Iterable<UnifiedIsoWeek>): { min: UnifiedIsoWeek; max: UnifiedIsoWeek } | undefined {
