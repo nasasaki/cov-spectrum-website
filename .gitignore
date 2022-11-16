@@ -19,6 +19,7 @@ Dockerfile
 .env.test.local
 .env.production.local
 BuildMe.sh
+RunMe.sh
 
 # NPM
 npm-debug.log*
