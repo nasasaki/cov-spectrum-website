@@ -22,7 +22,10 @@ const letters = [
   { color: '#CF8B20', text: 'R' },
   { color: '#E08A13', text: 'U' },
   { color: '#F18805', text: 'M' },
-  { color: 'royalblue', text: 'for JAPAN'}
+];
+
+const letters_sub = [
+  { color: 'royalblue', text: 'for JAPAN' }
 ];
 
 const Logo = () => {
@@ -35,13 +38,19 @@ const Logo = () => {
 
   return (
     <a href={redirectLink} className='flex flex-row items-center hover:no-underline md:mb-0.5'>
-      <div>
+      <span>
         {letters.map((l: { color: string; text: string }, i) => (
           <span key={i} style={{ color: l.color, fontWeight: 'bold', fontSize: '1.75rem' }}>
             {l.text}
           </span>
         ))}
-      </div>
+        {' '}
+        {letters_sub.map((l: {color: string; text: string }, i) => (
+          <span key={i} style={{ color: l.color, fontWeight: 'bold', fontSize: '1.75rem' }}>
+            {l.text}
+          </span>
+        ))}
+      </span>
     </a>
   );
 };
@@ -91,9 +100,20 @@ const Header = () => {
                     <>
                       <div className='text-xs flex flex-row justify-between space-x-1'>
                         <div className='self-end text-gray-500 text-sm'>
-                          Enabled by data from{' '}
-                          <img src='/img/cog-jp_icon.png' alt='COG-JP' style={{ height: '20px' }} />{' '}
-                          and{' '}<img src='/img/gisaid.png' alt='GISAID' style={{ height: '20px' }} />
+                          <div className='flex w-full flex-row flex-wrap'>
+                            <div>
+                              Enabled by data from&nbsp;
+                            </div>
+                            <div>
+                              <img src='/img/cog-jp_icon.png' alt='COG-JP' style={{ height: '20px' }} />{' '}
+                            </div>
+                            <div>
+                            &nbsp;and&nbsp;
+                            </div>
+                            <div>
+                              <img src='/img/gisaid.png' alt='GISAID' style={{ height: '20px' }} />
+                            </div>
+                          </div>
                         </div>
                         {buttonToAlternativeSequenceDataSource}
                       </div>
