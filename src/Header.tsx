@@ -22,6 +22,7 @@ const letters = [
   { color: '#CF8B20', text: 'R' },
   { color: '#E08A13', text: 'U' },
   { color: '#F18805', text: 'M' },
+  { color: 'royalblue', text: 'for JAPAN'}
 ];
 
 const Logo = () => {
@@ -89,8 +90,11 @@ const Header = () => {
                   {sequenceDataSource === 'gisaid' ? (
                     <>
                       <div className='text-xs flex flex-row justify-between space-x-1'>
-                        <div className='self-end text-gray-500 text-sm'>Enabled by data from </div>{' '}
+                        <div className='self-end text-gray-500 text-sm'>
+                          Enabled by data from{' '}
                           <img src='/img/cog-jp_icon.png' alt='COG-JP' style={{ height: '20px' }} />{' '}
+                          and{' '}<img src='/img/gisaid.png' alt='GISAID' style={{ height: '20px' }} />
+                        </div>
                         {buttonToAlternativeSequenceDataSource}
                       </div>
                     </>
